@@ -382,11 +382,9 @@ function render() {
         return dateA - dateB;
     });
 
-    const upcoming = sorted.filter(apt => {
-        const aptDate = new Date(apt.date + 'T' + apt.time);
-        return aptDate >= now && !apt.completed;
-    });
-
+    // VIS ALLE ikke-completed aftaler, UANSET om tiden er gået
+    const upcoming = sorted.filter(apt => !apt.completed);
+    
     const completed = sorted.filter(apt => apt.completed);
 
     renderUpcoming(upcoming, now, today);
