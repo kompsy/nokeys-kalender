@@ -1,4 +1,4 @@
-// NoKeys.dk Booking System - Optimized Version
+// NoKeys.dk Booking System - Clean Version
 
 let appointments = [];
 let editingId = null;
@@ -83,7 +83,6 @@ function updateGreeting() {
     const hour = new Date().getHours();
     const greetingEl = document.getElementById('greeting');
     
-    // Get saved name or prompt for it
     if (!userName) {
         userName = localStorage.getItem('nokeys_username');
         if (!userName) {
@@ -128,9 +127,7 @@ function enableInput(input) {
     }
 }
 
-// Initialize - check name first
 function init() {
-    // Check for username immediately
     userName = localStorage.getItem('nokeys_username');
     if (!userName) {
         userName = prompt('Velkommen! Hvad er dit navn?') || 'Bruger';
@@ -170,30 +167,23 @@ function cleanupOldCompleted() {
     const now = Date.now();
     const fiveHours = 5 * 60 * 60 * 1000;
     
-    const originalLength = appointments.length;
+    const before = appointments.length;
     
-    // VIGTIG: Behold ALLE aftaler der IKKE er completed
-    // Slet KUN aftaler der er completed OG ældre end 5 timer
     appointments = appointments.filter(apt => {
-        // Hvis aftalen IKKE er completed, behold den ALTID
+        // Behold ALLE ikke-completed aftaler
         if (!apt.completed) {
             return true;
         }
         
-        // Hvis aftalen ER completed, tjek om den skal slettes
-        if (apt.completed && apt.completedAt) {
-            const timeSinceCompleted = now - apt.completedAt;
-            const shouldKeep = timeSinceCompleted < fiveHours;
-            return shouldKeep;
+        // For completed aftaler: behold kun hvis under 5 timer gamle
+        if (apt.completedAt) {
+            return (now - apt.completedAt) < fiveHours;
         }
         
-        // Hvis completed men ingen completedAt (gamle data), behold den
         return true;
     });
     
-    const deletedCount = originalLength - appointments.length;
-    if (deletedCount > 0) {
-        console.log(`Cleanup: Slettede ${deletedCount} gamle afsluttede aftaler`);
+    if (appointments.length < before) {
         saveToStorage();
     }
 }
@@ -308,9 +298,9 @@ function toggleComplete(id) {
             apt.completedAt = apt.completed ? Date.now() : null;
             
             if (apt.completed) {
-                showToast(`Aftale med ${apt.customerName} markeret som færdig!`, 'success');
+                showToast(`${apt.customerName} afsluttet! Slettes om 5 timer.`, 'success');
             } else {
-                showToast(`Aftale med ${apt.customerName} markeret som aktiv`, 'info');
+                showToast(`${apt.customerName} sat til aktiv igen`, 'info');
             }
         }
         return apt;
@@ -382,9 +372,8 @@ function render() {
         return dateA - dateB;
     });
 
-    // VIS ALLE ikke-completed aftaler, UANSET om tiden er gået
+    // Vis ALLE ikke-completed aftaler
     const upcoming = sorted.filter(apt => !apt.completed);
-    
     const completed = sorted.filter(apt => apt.completed);
 
     renderUpcoming(upcoming, now, today);
@@ -410,6 +399,7 @@ function renderUpcoming(upcoming, now, today) {
         const hoursUntil = (aptTime - now) / (1000 * 60 * 60);
         const isSoon = hoursUntil <= 2 && hoursUntil > 0;
         const isToday = apt.date === today;
+        const isPast = aptTime < now;
 
         const dateStr = aptTime.toLocaleDateString('da-DK', {
             weekday: 'short',
@@ -417,8 +407,18 @@ function renderUpcoming(upcoming, now, today) {
             month: 'short'
         });
 
-        const warningClass = isSoon ? 'warning-soon' : (isToday ? 'warning-today' : '');
-        const warning = isSoon ? '<div class="warning-badge">⚠️ Starter snart!</div>' : '';
+        let warningClass = '';
+        let warning = '';
+        
+        if (isPast) {
+            warningClass = 'warning-soon';
+            warning = '<div class="warning-badge">⏰ Overskredet - husk at afslutte!</div>';
+        } else if (isSoon) {
+            warningClass = 'warning-soon';
+            warning = '<div class="warning-badge">⚠️ Starter snart!</div>';
+        } else if (isToday) {
+            warningClass = 'warning-today';
+        }
 
         return `
             <div class="appointment-card ${warningClass}">
@@ -439,8 +439,8 @@ function renderUpcoming(upcoming, now, today) {
                 ${warning}
                 <div class="appointment-actions">
                     <button class="action-btn btn-calendar" onclick="addToGoogleCalendar(${apt.id})" title="Tilføj til Google Kalender">📅 Cal</button>
-                    <button class="action-btn btn-edit" onclick="editAppointment(${apt.id})" title="Rediger aftale">✏️ Rediger</button>
-                    <button class="action-btn btn-delete" onclick="deleteAppointment(${apt.id})" title="Slet aftale">🗑️ Slet</button>
+                    <button class="action-btn btn-edit" onclick="editAppointment(${apt.id})" title="Rediger">✏️ Rediger</button>
+                    <button class="action-btn btn-delete" onclick="deleteAppointment(${apt.id})" title="Slet">🗑️ Slet</button>
                 </div>
             </div>
         `;
@@ -465,7 +465,7 @@ function renderCompleted(completed) {
         return `
             <div class="appointment-card completed">
                 <div class="appointment-header">
-                    <button class="check-btn checked" onclick="toggleComplete(${apt.id})" title="Marker som aktiv">✓</button>
+                    <button class="check-btn checked" onclick="toggleComplete(${apt.id})" title="Aktiv igen">✓</button>
                     <div class="appointment-info">
                         <div class="customer-name">${apt.customerName}</div>
                         <div class="service-name">${apt.service}</div>
@@ -475,7 +475,7 @@ function renderCompleted(completed) {
                     </div>
                 </div>
                 <div class="appointment-actions" style="margin-top: 8px;">
-                    <button class="action-btn btn-delete" onclick="deleteAppointment(${apt.id})" title="Slet aftale">🗑️ Slet</button>
+                    <button class="action-btn btn-delete" onclick="deleteAppointment(${apt.id})" title="Slet">🗑️ Slet</button>
                 </div>
             </div>
         `;
