@@ -128,7 +128,15 @@ function enableInput(input) {
     }
 }
 
+// Initialize - check name first
 function init() {
+    // Check for username immediately
+    userName = localStorage.getItem('nokeys_username');
+    if (!userName) {
+        userName = prompt('Velkommen! Hvad er dit navn?') || 'Bruger';
+        localStorage.setItem('nokeys_username', userName);
+    }
+    
     setupIOSInputFix();
     updateGreeting();
     loadFromStorage();
