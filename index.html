@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NoKeys.dk - Booking System</title>
+    
+    <!-- PWA Meta Tags -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="NoKeys">
+    <meta name="apple-touch-fullscreen" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#43e97b">
+    <meta name="msapplication-TileColor" content="#43e97b">
+    <meta name="format-detection" content="telephone=no">
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="manifest.json">
+    
+    <!-- App icons -->
+    <link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTkyIiBoZWlnaHQ9IjE5MiIgdmlld0JveD0iMCAwIDEyOCAxMjgiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjEyOCIgaGVpZ2h0PSIxMjgiIHJ4PSIyNCIgZmlsbD0iIzQzZTk3YiIvPjxwYXRoIGQ9Ik01MSA2Mkw2NyA0NE03MSA1M0w4MyA2MiIgc3Ryb2tlPSIjMGYwZjIzIiBzdHJva2Utd2lkdGg9IjgiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjwvc3ZnPg==" sizes="192x192">
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div id="loadingScreen" class="loading-screen">
+        <div class="loading-content">
+            <div class="loading-logo">🔑</div>
+            <h2>NoKeys.dk</h2>
+            <div class="loading-spinner"></div>
+        </div>
+    </div>
+
+    <!-- Main App -->
+    <div id="app" class="app-container" style="display: none;">
+        <header>
+    <div class="hero-background"></div>
+    <h1 id="greeting">NoKeys.dk</h1>
+    <div id="dailyQuote">nokeys ApS - Kalender Booking</div>
+    <div class="stats">
+        <div class="stat">
+            <div class="stat-value" id="upcomingCount">0</div>
+            <div class="stat-label">Kommende</div>
+        </div>
+        <div class="stat">
+            <div class="stat-value" id="completedCount">0</div>
+            <div class="stat-label">Klaret I dag</div>
+        </div>
+    </div>
+</header>
+
+        <div class="content">
+            <div class="section">
+                <div class="section-header">
+                    <h2 class="section-title">📅 Kommende Aftaler</h2>
+                    <button class="btn-primary" onclick="openModal()">+ Ny Aftale</button>
+                </div>
+                <div id="appointmentsList"></div>
+            </div>
+
+            <div id="completedSection" class="section" style="display: none;">
+                <h2 class="section-title">✓ Klarede Aftaler</h2>
+                <div id="completedList"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="modalTitle">+ Ny Aftale</h3>
+                <button class="btn-close" onclick="closeModal()">×</button>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">👤 Kunde Navn *</label>
+                <input type="text" class="form-input" id="customerName" placeholder="John Doe">
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">📞 Telefon *</label>
+                <input type="tel" class="form-input" id="phone" placeholder="+45 12 34 56 78">
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">✉️ Email</label>
+                <input type="email" class="form-input" id="email" placeholder="john@example.com">
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">🔧 Service *</label>
+                <input type="text" class="form-input" id="service" placeholder="Lås udskiftning">
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label class="form-label">📅 Dato *</label>
+                    <input type="date" class="form-input" id="date">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">🕐 Tid *</label>
+                    <input type="time" class="form-input" id="time">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">📍 Adresse *</label>
+                <input type="text" class="form-input" id="address" placeholder="Hovedgaden 123">
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">📝 Noter</label>
+                <textarea class="form-input" id="notes" rows="3" placeholder="Ekstra info..."></textarea>
+            </div>
+
+            <div class="form-actions">
+                <button class="btn-primary" onclick="saveAppointment()" id="saveBtn">💾 Opret Aftale</button>
+                <button class="btn-secondary" onclick="closeModal()">✕ Annuller</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification Toast -->
+    <div id="toast" class="toast hidden">
+        <div class="toast-content">
+            <span class="toast-icon"></span>
+            <span class="toast-message"></span>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="app.js"></script>
+    <script>
+        // Service Worker Registration
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('service-worker.js')
+                    .then(registration => {
+                        console.log('SW registered: ', registration);
+                    })
+                    .catch(registrationError => {
+                        console.log('SW registration failed: ', registrationError);
+                    });
+            });
+        }
+
+        // App initialization - OPTIMERET TIL 300ms
+        document.addEventListener('DOMContentLoaded', () => {
+            setTimeout(() => {
+                document.getElementById('loadingScreen').style.display = 'none';
+                document.getElementById('app').style.display = 'block';
+                document.getElementById('app').style.opacity = '0';
+                setTimeout(() => {
+                    document.getElementById('app').style.transition = 'opacity 0.3s ease';
+                    document.getElementById('app').style.opacity = '1';
+                }, 10);
+            }, 300); // Reduceret fra 1500ms
+        });
+
+        // Simple iOS PWA Input Fix
+        if (/iPad|iPhone|iPod/.test(navigator.userAgent) && window.navigator.standalone) {
+            document.addEventListener('DOMContentLoaded', function() {
+                const style = document.createElement('style');
+                style.innerHTML = `
+                    input, textarea, select {
+                        font-size: 16px !important;
+                        -webkit-user-select: text !important;
+                        user-select: text !important;
+                    }
+                `;
+                document.head.appendChild(style);
+            });
+        }
+    </script>
+</body>
+</html>

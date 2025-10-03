@@ -1,0 +1,71 @@
+{
+  "name": "NoKeys.dk Booking System",
+  "short_name": "NoKeys",
+  "description": "Professional booking system for locksmith services with appointment management and scheduling",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#0f0f23",
+  "theme_color": "#43e97b",
+  "orientation": "portrait-primary",
+  "scope": "./",
+  "lang": "da",
+  "categories": ["business", "productivity", "utilities"],
+  "icons": [
+    {
+      "src": "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTkyIiBoZWlnaHQ9IjE5MiIgdmlld0JveD0iMCAwIDEyOCAxMjgiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjEyOCIgaGVpZ2h0PSIxMjgiIHJ4PSIyNCIgZmlsbD0iIzQzZTk3YiIvPjxwYXRoIGQ9Ik01MSA2Mkw2NyA0NE03MSA1M0w4MyA2MiIgc3Ryb2tlPSIjMGYwZjIzIiBzdHJva2Utd2lkdGg9IjgiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjwvc3ZnPg==",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiIgdmlld0JveD0iMCAwIDEyOCAxMjgiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjEyOCIgaGVpZ2h0PSIxMjgiIHJ4PSIyNCIgZmlsbD0iIzQzZTk3YiIvPjxwYXRoIGQ9Ik01MSA2Mkw2NyA0NE03MSA1M0w4MyA2MiIgc3Ryb2tlPSIjMGYwZjIzIiBzdHJva2Utd2lkdGg9IjgiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjwvc3ZnPg==",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTI4MCIgaGVpZ2h0PSI3MjAiIHZpZXdCb3g9IjAgMCAxMjgwIDcyMCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTI4MCIgaGVpZ2h0PSI3MjAiIGZpbGw9IiMwZjBmMjMiLz48dGV4dCB4PSI2NDAiIHk9IjM2MCIgZmlsbD0iIzQzZTk3YiIgZm9udC1zaXplPSI0OCIgdGV4dC1hbmNob3I9Im1pZGRsZSI+Tm9LZXlzLmRrPC90ZXh0Pjx0ZXh0IHg9IjY0MCIgeT0iNDIwIiBmaWxsPSIjZTBlMGUwIiBmb250LXNpemU9IjI0IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5Cb29raW5nIFN5c3RlbTwvdGV4dD48L3N2Zz4=",
+      "sizes": "1280x720",
+      "type": "image/svg+xml",
+      "platform": "wide",
+      "label": "Booking system interface"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Ny Aftale",
+      "short_name": "Ny Aftale",
+      "description": "Opret en ny booking aftale",
+      "url": "./index.html#new",
+      "icons": [
+        {
+          "src": "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTkyIiBoZWlnaHQ9IjE5MiIgdmlld0JveD0iMCAwIDEyOCAxMjgiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjEyOCIgaGVpZ2h0PSIxMjgiIHJ4PSIyNCIgZmlsbD0iIzQzZTk3YiIvPjxwYXRoIGQ9Ik02NCA0MEw2NCA4OE04OCA2NEw0MCA2NCIgc3Ryb2tlPSIjMGYwZjIzIiBzdHJva2Utd2lkdGg9IjgiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjwvc3ZnPg==",
+          "sizes": "192x192"
+        }
+      ]
+    },
+    {
+      "name": "Kommende Aftaler",
+      "short_name": "Aftaler",
+      "description": "Se kommende booking aftaler",
+      "url": "./index.html#appointments",
+      "icons": [
+        {
+          "src": "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTkyIiBoZWlnaHQ9IjE5MiIgdmlld0JveD0iMCAwIDEyOCAxMjgiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjEyOCIgaGVpZ2h0PSIxMjgiIHJ4PSIyNCIgZmlsbD0iIzQzZTk3YiIvPjxyZWN0IHg9IjI0IiB5PSI0MCIgd2lkdGg9IjgwIiBoZWlnaHQ9IjU2IiByeD0iOCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMGYwZjIzIiBzdHJva2Utd2lkdGg9IjQiLz48L3N2Zz4=",
+          "sizes": "192x192"
+        }
+      ]
+    }
+  ],
+  "related_applications": [],
+  "prefer_related_applications": false,
+  "display_override": ["standalone", "minimal-ui"],
+  "edge_side_panel": {
+    "preferred_width": 400
+  },
+  "launch_handler": {
+    "client_mode": "navigate-existing"
+  }
+}
