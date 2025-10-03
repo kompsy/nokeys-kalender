@@ -168,17 +168,32 @@ function saveToStorage() {
 
 function cleanupOldCompleted() {
     const now = Date.now();
-    const fiveHours = 5 * 60 * 60 * 1000;  // 5 timer
+    const fiveHours = 5 * 60 * 60 * 1000;
     
     const originalLength = appointments.length;
+    
+    // VIGTIG: Behold ALLE aftaler der IKKE er completed
+    // Slet KUN aftaler der er completed OG ældre end 5 timer
     appointments = appointments.filter(apt => {
-        if (apt.completed && apt.completedAt) {
-            return (now - apt.completedAt) < fiveHours;  // ÆNDRET
+        // Hvis aftalen IKKE er completed, behold den ALTID
+        if (!apt.completed) {
+            return true;
         }
+        
+        // Hvis aftalen ER completed, tjek om den skal slettes
+        if (apt.completed && apt.completedAt) {
+            const timeSinceCompleted = now - apt.completedAt;
+            const shouldKeep = timeSinceCompleted < fiveHours;
+            return shouldKeep;
+        }
+        
+        // Hvis completed men ingen completedAt (gamle data), behold den
         return true;
     });
     
-    if (appointments.length < originalLength) {
+    const deletedCount = originalLength - appointments.length;
+    if (deletedCount > 0) {
+        console.log(`Cleanup: Slettede ${deletedCount} gamle afsluttede aftaler`);
         saveToStorage();
     }
 }
