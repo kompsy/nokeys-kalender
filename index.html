@@ -148,7 +148,7 @@
             });
         }
 
-        // App initialization - OPTIMERET TIL 300ms
+        // App initialization - OPTIMERET TIL 50ms
         document.addEventListener('DOMContentLoaded', () => {
             setTimeout(() => {
                 document.getElementById('loadingScreen').style.display = 'none';
@@ -158,7 +158,7 @@
                     document.getElementById('app').style.transition = 'opacity 0.3s ease';
                     document.getElementById('app').style.opacity = '1';
                 }, 10);
-            }, 300); // Reduceret fra 1500ms
+            }, 50); // Reduceret fra 300ms
         });
 
         // Simple iOS PWA Input Fix
